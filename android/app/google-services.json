@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "699881808145",
+    "firebase_url": "https://app-db-dev-default-rtdb.firebaseio.com",
+    "project_id": "app-db-dev",
+    "storage_bucket": "app-db-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699881808145:android:5b47474ee801b236252cb0",
+        "android_client_info": {
+          "package_name": "com.app.stocked"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699881808145-c0oa06dbpeau3dabm2i5ee87a0a3m3jj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ0dBpQ9CzQrskm4LRao6Nx1rEjeUHz5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699881808145-c0oa06dbpeau3dabm2i5ee87a0a3m3jj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "699881808145-rdtgff2eho233rq3le7uho82dpd3q9sp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pilates.app.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699881808145:android:c802f0ae4726184d252cb0",
+        "android_client_info": {
+          "package_name": "com.pilates.app.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699881808145-c0oa06dbpeau3dabm2i5ee87a0a3m3jj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ0dBpQ9CzQrskm4LRao6Nx1rEjeUHz5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699881808145-c0oa06dbpeau3dabm2i5ee87a0a3m3jj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "699881808145-rdtgff2eho233rq3le7uho82dpd3q9sp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pilates.app.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

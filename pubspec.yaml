@@ -1,0 +1,43 @@
+name: stocked
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
+  firebase_database: ^10.0.9
+  form_field_validator: ^1.1.0
+  fl_chart: ^0.61.0
+  http: ^0.13.5
+  lottie: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/lottie/
+    - assets/fonts/
+  fonts:
+    - family: AppFonts
+      fonts:
+        - asset: assets/fonts/NotoSansThai-Regular.ttf
+        - asset: assets/fonts/NotoSansThai-Bold.ttf
+          weight: 800
+
