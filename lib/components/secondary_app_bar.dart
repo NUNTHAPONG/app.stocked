@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SecondaryAppBar extends StatefulWidget {
-  const SecondaryAppBar({super.key});
+  const SecondaryAppBar({super.key, this.title});
+
+  final String? title;
 
   @override
   State<SecondaryAppBar> createState() => _SecondaryAppBarState();
@@ -27,9 +29,9 @@ class _SecondaryAppBarState extends State<SecondaryAppBar> {
         },
       ),
       backgroundColor: Colors.white10,
-      title: const Text(
-        'รายละเอียดข้อมูล',
-        style: TextStyle(color: Colors.black),
+      title: Text(
+        widget.title ?? '',
+        style: const TextStyle(color: Colors.black),
       ),
       centerTitle: true,
       elevation: 0,

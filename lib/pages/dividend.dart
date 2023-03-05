@@ -16,62 +16,66 @@ class DividendPage extends StatefulWidget {
 }
 
 class _DividendPageState extends State<DividendPage> {
-  final DividendRepo _db = DividendRepo();
-
-  final _formKey = GlobalKey<FormState>();
+  final DividendRepo _divRepo = DividendRepo();
 
   @override
   void initState() {
     super.initState();
-    _db.getQuery().keepSynced(true);
+    _divRepo.getQuery().keepSynced(true);
   }
 
   @override
   void dispose() {
     super.dispose();
-    // _db.getQuery().keepSynced(false);
+    // _divRepo.getQuery().keepSynced(false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FirebaseAnimatedList(
-        // defaultChild: loadingScreen(),
-        query: _db.getQuery(),
-        itemBuilder: (BuildContext context, DataSnapshot snapshot,
-            Animation<double> animation, int index) {
-          Dividend data =
-              Dividend.fromJson(snapshot.key!, jsonEncode(snapshot.value));
-          if (!snapshot.exists) {
-            return errorScreen();
-          } else {
-            return Card(
-              child: ListTile(
-                title: Text(data.key.toString()),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(data.symbol.toString()),
-                    Text(DateTimeService.formatTime(data.payDate!)),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FirebaseAnimatedList(
+          // defaultChild: loadingScreen(),
+          query: _divRepo.getQuery(),
+          sort: (b, a) => Dividend.fromJson(a.key!, jsonEncode(a.value))
+              .payDate!
+              .compareTo(Dividend.fromJson(b.key!, jsonEncode(b.value)).payDate!),
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            Dividend data =
+                Dividend.fromJson(snapshot.key!, jsonEncode(snapshot.value));
+            if (!snapshot.exists) {
+              return errorScreen();
+            } else {
+              return Card(
+                child: ListTile(
+                  title: Text(data.key.toString()),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(data.symbol.toString()),
+                      Text(DateTimeService.formatDate(data.payDate!)),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.redAccent,),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              removeWidget(context, data));
+                    },
+                  ),
+                  onTap: () {
                     showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            removeWidget(context, data));
+                        builder: ((context) => detailWidget(context, data)));
                   },
                 ),
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: ((context) => detailWidget(context, data)));
-                },
-              ),
-            );
-          }
-        });
+              );
+            }
+          }),
+    );
   }
 
   Widget detailWidget(BuildContext context, Dividend data) {
@@ -193,8 +197,11 @@ class _DividendPageState extends State<DividendPage> {
           onPressed: () => Navigator.pop(context, 'Cancel'),
           child: const Text('ยกเลิก'),
         ),
-        TextButton(
-          onPressed: () => _db.remove(data.key!),
+        ElevatedButton(
+          onPressed: () {
+            _divRepo.remove(data.key!);
+            return Navigator.pop(context, 'Cancel');
+          },
           child: const Text('ยืนยัน'),
         ),
       ],

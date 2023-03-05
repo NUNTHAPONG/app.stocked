@@ -37,33 +37,36 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FirebaseAnimatedList(
-        // defaultChild: loadingScreen(),
-        query: _db.getQuery(),
-        itemBuilder: (BuildContext context, DataSnapshot snapshot,
-            Animation<double> animation, int index) {
-          Portfolio data =
-              Portfolio.fromJson(snapshot.key!, jsonEncode(snapshot.value));
-          if (!snapshot.exists) {
-            return errorScreen();
-          } else {
-            return Card(
-              child: ListTile(
-                title: Text(data.key.toString()),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(data.symbol.toString()),
-                    Text(data.volumn.toString()),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FirebaseAnimatedList(
+          // defaultChild: loadingScreen(),
+          query: _db.getQuery(),
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            Portfolio data =
+                Portfolio.fromJson(snapshot.key!, jsonEncode(snapshot.value));
+            if (!snapshot.exists) {
+              return errorScreen();
+            } else {
+              return Card(
+                child: ListTile(
+                  title: Text(data.key.toString()),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(data.symbol.toString()),
+                      Text(data.volumn.toString()),
+                    ],
+                  ),
+                  onTap: () {
+                    toDetail(data: data);
+                  },
                 ),
-                onTap: () {
-                  toDetail(data: data);
-                },
-              ),
-            );
-          }
-        });
+              );
+            }
+          }),
+    );
   }
 }
 

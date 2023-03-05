@@ -5,7 +5,7 @@ import 'package:stocked/utils/datetime.dart';
 import 'package:stocked/utils/form.dart';
 
 class InputDate extends StatefulWidget {
-  InputDate(
+  const InputDate(
       {super.key,
       required this.controller,
       this.label,
@@ -14,12 +14,12 @@ class InputDate extends StatefulWidget {
       required this.onSaved,
       required this.validate});
 
-  TextEditingController controller;
-  String? label;
-  bool? disable;
-  Function(String?)? onChanged;
-  Function(DateTime?) onSaved;
-  List<FieldValidator> validate;
+  final TextEditingController controller;
+  final String? label;
+  final bool? disable;
+  final Function(String?)? onChanged;
+  final Function(DateTime?) onSaved;
+  final List<FieldValidator> validate;
 
   @override
   State<InputDate> createState() => _InputDateState();
@@ -27,7 +27,6 @@ class InputDate extends StatefulWidget {
 
 class _InputDateState extends State<InputDate> {
   DateTime dateTime = DateTime.now();
-  final FocusNode _onFocus = FocusNode();
 
   bool _isRequireInput() {
     return widget.validate

@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:stocked/components/primary_app_bar.dart';
 import 'package:stocked/components/drawer.dart';
+import 'package:stocked/models/portfolio.dart';
 import 'package:stocked/pages/detail.dart';
 import 'package:stocked/pages/dividend_modal.dart';
+import 'package:stocked/repositories/portfolio.dart';
 import 'package:stocked/utils/routes.dart';
 
 class AppPage extends StatefulWidget {
@@ -15,6 +20,9 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
+  final PortfolioRepo _portRepo = PortfolioRepo();
+  final List<Portfolio> _portList = [];
+  late final StreamSubscription _onPortAdd;
 
   void toDetail({dynamic data}) {
     Navigator.push(context,
@@ -22,7 +30,11 @@ class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
   }
 
   void toAddDividend() {
-    showDialog(context: context, builder: ((context) => DividendModal()));
+    showDialog(
+        context: context,
+        builder: ((context) => DividendModal(
+              master: {"list": _portList},
+            )));
   }
 
   int _selectedPageIndex = 0;
@@ -40,19 +52,27 @@ class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _onPortAdd = _portRepo.getQuery().onChildAdded.listen((event) {
+      _portList.add(Portfolio.fromJson(
+          event.snapshot.key!, jsonEncode(event.snapshot.value)));
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _onPortAdd.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: PrimaryAppBar(),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: PrimaryAppBar(title: pages.elementAt(_selectedPageIndex).title,),
         ),
         drawer: const AppDrawer(),
-        body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: pages.elementAt(_selectedPageIndex).screen),
+        body: pages.elementAt(_selectedPageIndex).screen,
         floatingActionButton: floatingActionButton(),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

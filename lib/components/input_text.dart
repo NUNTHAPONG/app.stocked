@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class InputText extends StatefulWidget {
-  InputText(
+  const InputText(
       {super.key,
       required this.controller,
       this.label,
@@ -13,13 +13,13 @@ class InputText extends StatefulWidget {
       required this.onSaved,
       required this.validate});
 
-  TextEditingController controller;
-  String? label;
-  IconData? icon;
-  bool? disable;
-  Function(String?)? onChanged;
-  Function(String) onSaved;
-  List<FieldValidator> validate;
+  final TextEditingController controller;
+  final String? label;
+  final IconData? icon;
+  final bool? disable;
+  final Function(String?)? onChanged;
+  final Function(String) onSaved;
+  final List<FieldValidator> validate;
 
   @override
   State<InputText> createState() => _InputTextState();

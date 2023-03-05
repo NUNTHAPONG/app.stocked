@@ -26,6 +26,13 @@ class DecimalTextInputFormatter extends TextInputFormatter {
         value.substring(value.indexOf(".") + 1).length > _digits) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
+    } else if (RegExp(r"[\.]").allMatches(value).length > 1) {
+      truncated = oldValue.text;
+
+      newSelection = newValue.selection.copyWith(
+        baseOffset: min(truncated.length, truncated.length + 1),
+        extentOffset: min(truncated.length, truncated.length + 1),
+      );
     } else if (value == "." && _digits > 0) {
       truncated = "0.";
 

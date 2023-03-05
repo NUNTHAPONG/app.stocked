@@ -4,7 +4,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:stocked/utils/form.dart';
 
 class InputNumber extends StatefulWidget {
-  InputNumber(
+  const InputNumber(
       {super.key,
       required this.controller,
       this.label,
@@ -15,14 +15,14 @@ class InputNumber extends StatefulWidget {
       required this.onSaved,
       required this.validate});
 
-  TextEditingController controller;
-  String? label;
-  IconData? icon;
-  int? digits;
-  bool? disable;
-  Function(double?) onSaved;
-  Function(String)? onChanged;
-  List<FieldValidator> validate;
+  final TextEditingController controller;
+  final String? label;
+  final IconData? icon;
+  final int? digits;
+  final bool? disable;
+  final Function(double?) onSaved;
+  final Function(String)? onChanged;
+  final List<FieldValidator> validate;
 
   @override
   State<InputNumber> createState() => _InputNumberState();
@@ -50,7 +50,9 @@ class _InputNumberState extends State<InputNumber> {
     super.initState();
     digits = widget.digits ?? 2;
     _onFocus.addListener(() {
-      if (!_onFocus.hasFocus && !widget.controller.text.contains('.') && digits > 0) {
+      if (!_onFocus.hasFocus &&
+          !widget.controller.text.contains('.') &&
+          digits > 0) {
         widget.controller.text = widget.controller.text.isNotEmpty
             ? '${widget.controller.text}.${'0' * digits}'
             : '0.${'0' * digits}';
@@ -83,11 +85,13 @@ class _InputNumberState extends State<InputNumber> {
         ),
         TextFormField(
           controller: widget.controller,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           focusNode: _onFocus,
           enabled: widget.disable != null ? !widget.disable! : true,
           textAlign: TextAlign.right,
-          inputFormatters: <TextInputFormatter>[DecimalTextInputFormatter(digits: digits)],
+          inputFormatters: <TextInputFormatter>[
+            DecimalTextInputFormatter(digits: digits)
+          ],
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: MultiValidator(widget.validate),
           style: const TextStyle(
