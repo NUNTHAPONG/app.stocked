@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stocked/components/input_date.dart';
-import 'package:stocked/components/input_number.dart';
-import 'package:stocked/components/input_select.dart';
+import 'package:stocked/components/input/input_date.dart';
+import 'package:stocked/components/input/input_number.dart';
+import 'package:stocked/components/input/input_select.dart';
 import 'package:stocked/models/dividend.dart';
 import 'package:stocked/repositories/dividend.dart';
 import 'package:stocked/utils/datetime.dart';
@@ -35,32 +35,44 @@ class _DividendModalState extends State<DividendModal> {
     _netAmtController.text = (amt - wht).toStringAsFixed(2);
   }
 
+  void save() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      _divRepo.saveChanges(_data);
+      // log(_data.toJson());
+      Navigator.pop(context);
+    } else {
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    void save() {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        _divRepo.saveChanges(_data);
-        // log(_data.toJson());
-        Navigator.pop(context);
-      } else {
-        return;
-      }
-    }
+  void dispose() {
+    super.dispose();
+    _amtController.dispose();
+    _whtController.dispose();
+    _netAmtController.dispose();
+    _dateController.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      content: SizedBox(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      content: Container(
         width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
-          children: [
+          children: <Widget>[
             Form(
               key: _formKey,
               child: Column(
@@ -69,29 +81,30 @@ class _DividendModalState extends State<DividendModal> {
                   InputSelect(
                       value: _data.symbol,
                       label: 'สัญลักษณ์',
-                      validate:  [RequiredValidator(errorText: 'กรอกมาสักอย่าง')],
                       items: widget.master['list']
                           .map<SelectOption>((e) => SelectOption(
-                              e.symbol.toString(), e.symbol.toString()))
+                              e.symbol.toString(),
+                              '${e.symbol.toString()} : ${e.nameTh.toString()}'))
                           .toList(),
-                      onChanged: (value) => setState(() => _data.symbol = value)),
+                      onChanged: (value) =>
+                          setState(() => _data.symbol = value)),
                   InputDate(
                     controller: _dateController,
                     label: 'วันที่จ่ายปันผล',
-                    validate: const [],
+                    validate: const <FieldValidator>[],
                     onSaved: (value) => setState(() => _data.payDate = value),
                   ),
                   InputNumber(
                     controller: _amtController,
                     label: 'จำนวน',
-                    validate: [RequiredValidator(errorText: 'กรอกมาสักอย่าง')],
+                    validate: <FieldValidator>[RequiredValidator(errorText: 'กรอกมาสักอย่าง')],
                     onChanged: _setNetAmt,
                     onSaved: (value) => setState(() => _data.amt = value),
                   ),
                   InputNumber(
                     controller: _whtController,
                     label: 'หัก ณ ที่จ่าย',
-                    validate: const [],
+                    validate: <FieldValidator>[RequiredValidator(errorText: 'กรอกมาสักอย่าง')],
                     onChanged: _setNetAmt,
                     onSaved: (value) => setState(() => _data.wht = value),
                   ),
@@ -99,24 +112,29 @@ class _DividendModalState extends State<DividendModal> {
                     controller: _netAmtController,
                     label: 'จำนวนสุทธิ',
                     disable: true,
-                    validate: const [],
+                    validate: <FieldValidator>[
+                      PatternValidator(r'^[0-9].+', errorText: 'อย่าาาๆๆๆๆ')
+                    ],
                     onSaved: (value) => setState(() => _data.netAmt = value),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 35),
                     child: ElevatedButton(
                       onPressed: save,
-                      child: const Text("บันทึกข้อมูล"),
+                      child: const Text(
+                        "บันทึกข้อมูล",
+                        style: TextStyle(),
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-            // Positioned(
-            //   top: -90,
-            //   child: Lottie.asset('assets/lottie/pig-save.json',
-            //       width: 76, height: 76, fit: BoxFit.cover),
-            // ),
+            Positioned(
+              top: -90,
+              child: Lottie.asset('assets/lottie/pig-save.json',
+                  width: 76, height: 76, fit: BoxFit.cover),
+            ),
           ],
         ),
       ),

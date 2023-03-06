@@ -86,13 +86,16 @@ class _InputNumberState extends State<InputNumber> {
         TextFormField(
           controller: widget.controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          focusNode: _onFocus,
-          enabled: widget.disable != null ? !widget.disable! : true,
+          focusNode: widget.disable != null && widget.disable!
+              ? AlwaysDisabledFocusNode()
+              : _onFocus,
+          // enabled: widget.disable != null ? !widget.disable! : true,
           textAlign: TextAlign.right,
           inputFormatters: <TextInputFormatter>[
             DecimalTextInputFormatter(digits: digits)
           ],
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          enableInteractiveSelection: false,
           validator: MultiValidator(widget.validate),
           style: const TextStyle(
             fontSize: 14,

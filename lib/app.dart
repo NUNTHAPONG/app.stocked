@@ -69,7 +69,9 @@ class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50),
-          child: PrimaryAppBar(title: pages.elementAt(_selectedPageIndex).title,),
+          child: PrimaryAppBar(
+            title: pages.elementAt(_selectedPageIndex).title,
+          ),
         ),
         drawer: const AppDrawer(),
         body: pages.elementAt(_selectedPageIndex).screen,
@@ -80,12 +82,10 @@ class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
           currentIndex: _selectedPageIndex,
           selectedItemColor: Theme.of(context).primaryColor,
           onTap: _onChangePages,
-          items: [
-            ...pages
-                .map((e) => BottomNavigationBarItem(
-                    icon: Icon(e.icon), label: e.title, tooltip: e.title))
-                .toList()
-          ],
+          items: pages
+              .map<BottomNavigationBarItem>((e) => BottomNavigationBarItem(
+                  icon: Icon(e.icon), label: e.title, tooltip: e.title))
+              .toList(),
         ));
   }
 
@@ -117,14 +117,14 @@ class _AppPageState extends State<AppPage> with SingleTickerProviderStateMixin {
                 toDetail();
               },
               tooltip: 'เพิ่มข้อมูลหุ้น',
-              child: const Icon(Icons.edit_note))
+              child: const Icon(Icons.add))
           : FloatingActionButton(
               key: UniqueKey(),
               onPressed: () {
                 toAddDividend();
               },
               tooltip: 'เพิ่มการจ่ายปันผล',
-              child: const Icon(Icons.currency_bitcoin),
+              child: const Icon(Icons.savings),
             ),
     );
   }

@@ -21,6 +21,6 @@ List<AppNavigationItem> pages = [
   AppNavigationItem(
       key: 'div',
       title: 'เงินปันผล',
-      icon: Icons.savings,
+      icon: Icons.currency_bitcoin,
       screen: const DividendPage()),
 ];

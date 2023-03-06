@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:stocked/app.dart';
 import 'package:stocked/configs/firebase/firebase_options.dart';
-import 'package:stocked/theme.dart';
+import 'package:stocked/utils/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppTheme();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Stocked App',
+      theme: AppTheme.theme,
+      home: const AppPage(),
+    );
   }
 }

@@ -24,7 +24,7 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
-            tooltip: 'Menu',
+            tooltip: 'เมนู',
           );
         },
       ),

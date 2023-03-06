@@ -104,11 +104,11 @@ class _DashboardPageState extends State<DashboardPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   cardHeader(),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       summaryPie(_getPieData(_portList)),
                       dividendCrad(),
                     ],
@@ -128,12 +128,12 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: [
+            children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Column(
-                    children: [
+                    children: <Widget>[
                       Text(
                         'เงินปันผลรวม (${DateTimeService.getThMonthName(DateTime.now().month, true)}) ',
                         style:
@@ -142,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   ),
                   Row(
-                    children: [
+                    children: <Widget>[
                       Text(
                         NumberService.formatNumber(_getDivdSummary(_divList)),
                         style: const TextStyle(
@@ -162,21 +162,21 @@ class _DashboardPageState extends State<DashboardPage> {
               // const Text('จ่ายสูงสุด 3 อันดับเเรก'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text(_divList.length.toString()),
                   const Text('data'),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: const <Widget>[
                   Text('data'),
                   Text('data'),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: const <Widget>[
                   Text('data'),
                   Text('data'),
                 ],
@@ -202,7 +202,7 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           SizedBox(
             width: 120,
             height: 100,
@@ -220,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               ...data.map((e) {
                 double amt = (e.volumn! * e.avgPrice!);
                 double ratio = ((e.volumn! * e.avgPrice!) * 100 / sum);
@@ -245,10 +245,10 @@ class _DashboardPageState extends State<DashboardPage> {
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: <Widget>[
                 const Text(
                   'จำนวนเงินรวม',
                   style: TextStyle(
@@ -302,7 +302,7 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Container(

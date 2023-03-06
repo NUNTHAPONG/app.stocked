@@ -35,11 +35,11 @@ class _DividendPageState extends State<DividendPage> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: FirebaseAnimatedList(
-          // defaultChild: loadingScreen(),
           query: _divRepo.getQuery(),
           sort: (b, a) => Dividend.fromJson(a.key!, jsonEncode(a.value))
               .payDate!
-              .compareTo(Dividend.fromJson(b.key!, jsonEncode(b.value)).payDate!),
+              .compareTo(
+                  Dividend.fromJson(b.key!, jsonEncode(b.value)).payDate!),
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
             Dividend data =
@@ -52,13 +52,16 @@ class _DividendPageState extends State<DividendPage> {
                   title: Text(data.key.toString()),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text(data.symbol.toString()),
                       Text(DateTimeService.formatDate(data.payDate!)),
                     ],
                   ),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.redAccent,),
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.redAccent,
+                    ),
                     onPressed: () {
                       showDialog(
                           context: context,
@@ -88,21 +91,21 @@ class _DividendPageState extends State<DividendPage> {
         height: MediaQuery.of(context).size.height * 0.15,
         child: Stack(
           clipBehavior: Clip.none,
-          children: [
+          children: <Widget>[
             Positioned(
               right: -140,
               top: -190,
-              child: Container(
-                width: 36,
-                height: 36,
-                margin: const EdgeInsets.all(100.0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    shape: BoxShape.circle),
-                child: Center(
-                  child: InkResponse(
-                    onTap: () => Navigator.pop(context),
-                    child: const Text(
+              child: InkResponse(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  margin: const EdgeInsets.all(100.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      shape: BoxShape.circle),
+                  child: const Center(
+                    child: Text(
                       'x',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
@@ -114,7 +117,7 @@ class _DividendPageState extends State<DividendPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -134,7 +137,7 @@ class _DividendPageState extends State<DividendPage> {
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       const Text(
                         'จำนวนเงิน ',
                         style: TextStyle(
@@ -154,7 +157,7 @@ class _DividendPageState extends State<DividendPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     const Text(
                       'ภาษีหัก ณ ที่ จ่าย ',
                       style: TextStyle(
@@ -189,22 +192,38 @@ class _DividendPageState extends State<DividendPage> {
   Widget removeWidget(BuildContext context, Dividend data) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       title: const Text('ลบข้อมูล'),
       content: const Text('ต้องการลบข้อมูลการจ่ายปันผลใช่หรือไม่'),
       actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('ยกเลิก'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            _divRepo.remove(data.key!);
-            return Navigator.pop(context, 'Cancel');
-          },
-          child: const Text('ยืนยัน'),
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: Text(
+                'ยกเลิก',
+                style: TextStyle(
+                    fontSize:
+                        Theme.of(context).textTheme.labelMedium!.fontSize),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _divRepo.remove(data.key!);
+                return Navigator.pop(context, 'Cancel');
+              },
+              child: Text(
+                'ยืนยัน',
+                style: TextStyle(
+                    fontSize:
+                        Theme.of(context).textTheme.labelMedium!.fontSize),
+              ),
+            ),
+          ],
+        )
       ],
+      actionsPadding: const EdgeInsets.only(bottom: 20),
     );
   }
 }

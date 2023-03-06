@@ -3,6 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+class FormService {
+  static String controllerText(dynamic value) {
+    String result = value != null ? value.toString() : '';
+    return result;
+  }
+}
+
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;

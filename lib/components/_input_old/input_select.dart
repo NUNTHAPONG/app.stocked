@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 
 class SelectOption {
   late String value;
@@ -17,7 +16,6 @@ class InputSelect extends StatefulWidget {
     this.disable,
     required this.items,
     required this.onChanged,
-    required this.validate,
   });
 
   final String? value;
@@ -26,18 +24,12 @@ class InputSelect extends StatefulWidget {
   final bool? disable;
   final List<SelectOption> items;
   final Function(String) onChanged;
-  final List<FieldValidator> validate;
 
   @override
   State<InputSelect> createState() => _InputSelectState();
 }
 
 class _InputSelectState extends State<InputSelect> {
-  bool _isRequireInput() {
-    return widget.validate
-        .any((element) => element.runtimeType == RequiredValidator);
-  }
-
   String _getLabelText() {
     if (widget.label != null) {
       return widget.label!;
@@ -48,57 +40,59 @@ class _InputSelectState extends State<InputSelect> {
 
   @override
   Widget build(BuildContext context) {
+    int textLength = 40 - _getLabelText().length;
+
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 13),
-          child: Row(
-            children: [
-              Text(
-                _getLabelText(),
-                style: const TextStyle(
-                    fontSize: 14, fontWeight: FontWeight.normal),
-              ),
-              Text(
-                _isRequireInput() ? ' *' : '',
-                style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.red,
-                    fontWeight: FontWeight.normal),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 6),
+        //   child: Row(
+        //     children: [
+        //       Text(
+        //         _getLabelText(),
+        //         style: const TextStyle(
+        //             fontSize: 14, fontWeight: FontWeight.normal),
+        //       ),
+        //       const Text(
+        //         ' *',
+        //         style: TextStyle(
+        //             fontSize: 14,
+        //             color: Colors.red,
+        //             fontWeight: FontWeight.normal),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         DropdownButtonFormField<String>(
           value: widget.value ?? widget.items.first.value,
           icon: widget.icon != null
               ? Icon(widget.icon)
               : const Icon(Icons.keyboard_arrow_down),
-          isExpanded: true,
+          isExpanded: false,
           elevation: 4,
-          menuMaxHeight: MediaQuery.of(context).size.height * 0.25,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: MultiValidator(widget.validate),
+          menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
           style: const TextStyle(color: Colors.black),
-          // underline: Container(
-          //   height: 2,
-          //   color: Colors.deepPurpleAccent,
-          // ),
+          decoration: InputDecoration(
+            floatingLabelAlignment: FloatingLabelAlignment.center,
+              prefixText: _getLabelText(),
+              prefixStyle: const TextStyle(color: Colors.black, fontSize: 14)),
           onChanged: (String? value) => widget.onChanged(value.toString()),
-          items: widget.items.map<DropdownMenuItem<String>>((SelectOption item) {
+          onSaved: (String? value) => widget.onChanged(value.toString()),
+          items:
+              widget.items.map<DropdownMenuItem<String>>((SelectOption item) {
             return DropdownMenuItem<String>(
-              alignment: AlignmentDirectional.centerEnd,
               value: item.value,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  item.text,
-                  textAlign: TextAlign.start,
+                  item.text.length > textLength
+                      ? '${item.text.substring(0, textLength)}...'
+                      : item.text,
                 ),
               ),
             );
           }).toList(),
-        ),
+        )
       ],
     );
   }
